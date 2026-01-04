@@ -1,16 +1,88 @@
-# React + Vite
+# Jasri Space
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal portfolio and digital playground built with a modern tech stack. Features a dynamic content feed, project showcase, music player integration, and a comprehensive admin dashboard.
 
-Currently, two official plugins are available:
+![Jasri Space Preview](apps/jasri-space/public/vite.svg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## React Compiler
+- **Frontend:** React (Vite), TypeScript, Tailwind CSS
+- **Backend:** Express.js, MongoDB
+- **Containerization:** Docker, Docker Compose, NGINX
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Features
 
-## Expanding the ESLint configuration
+- **Dynamic Content:** Real-time updates for projects, mood status, and micro-blogging feeds.
+- **Admin Dashboard:** Secure interface to manage all content directly.
+- **Music Integration:** Embed Spotify playlists and track what's currently "On Rotation".
+- **Responsive Design:** Fully responsive UI/UX tailored for both mobile and desktop.
+- **Dockerized:** Ready for easy local development and production deployment.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🏁 Getting Started
+
+### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+- [Node.js](https://nodejs.org/) (optional, for local non-Docker dev).
+
+### Running with Docker (Recommended)
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Jasri-Mujad/my-landing-page.git
+    cd my-landing-page
+    ```
+
+2.  **Environment Setup:**
+    ```bash
+    cp .env.example .env
+    ```
+    *Update the `.env` file with your specific configurations (e.g., JWT_SECRET).*
+
+3.  **Launch:**
+    ```bash
+    docker-compose up --build
+    ```
+
+4.  **Access:**
+    - **Frontend:** [http://localhost:3000](http://localhost:3000)
+    - **API:** [http://localhost:5000](http://localhost:5000)
+
+### Manual Setup (Without Docker)
+
+1.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+2.  **Run backend:**
+    ```bash
+    npm run dev -w apps/api
+    ```
+
+3.  **Run frontend:**
+    ```bash
+    npm run dev -w apps/jasri-space
+    ```
+
+## 📂 Project Structure
+
+```bash
+├── apps
+│   ├── api              # Express.js Backend
+│   └── jasri-space      # React Frontend
+├── docker-compose.yml   # Docker orchestration
+└── README.md            # You are here
+```
+
+## 🔐 Environment Variables
+
+Reference `.env.example` for all required variables:
+
+- `MONGODB_URI`: Connection string for MongoDB.
+- `JWT_SECRET`: Secret key for authentication.
+- `VITE_API_URL`: Backend API URL for the frontend.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
