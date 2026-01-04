@@ -1,0 +1,12 @@
+{
+  "name": "alex-space-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:landing": "npm run dev -w apps/landing-page",
+    "dev:jasri": "npm run dev -w apps/jasri-space",
+    "build": "npm run build --workspaces"
+  }
+}

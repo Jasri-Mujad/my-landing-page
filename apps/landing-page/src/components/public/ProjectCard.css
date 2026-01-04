@@ -1,0 +1,22 @@
+.project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.project-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.project-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.project-links {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: auto;
+}

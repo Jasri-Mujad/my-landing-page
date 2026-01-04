@@ -1,0 +1,73 @@
+.management-page {
+    max-width: 900px;
+}
+
+.form-card {
+    margin-bottom: var(--space-xl);
+}
+
+.form-card h3 {
+    margin-bottom: var(--space-lg);
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-lg);
+}
+
+.item-content {
+    flex: 1;
+}
+
+.item-content h4 {
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.item-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.item-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.item-actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .item-card {
+        flex-direction: column;
+    }
+
+    .item-actions {
+        width: 100%;
+    }
+
+    .item-actions .btn {
+        flex: 1;
+    }
+}

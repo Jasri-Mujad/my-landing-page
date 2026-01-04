@@ -1,0 +1,11 @@
+.feed-list .section-title {
+    margin-bottom: var(--space-xl);
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: var(--space-2xl);
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+}
