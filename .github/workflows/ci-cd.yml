@@ -47,12 +47,3 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO }}/frontend:latest
             ghcr.io/${{ env.REPO }}/frontend:${{ github.sha }}
-
-      - name: Build and push Landing Page image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./apps/landing-page
-          push: true
-          tags: |
-            ghcr.io/${{ env.REPO }}/landing-page:latest
-            ghcr.io/${{ env.REPO }}/landing-page:${{ github.sha }}
