@@ -4,6 +4,9 @@ const Project = require('./models/Project');
 const Feed = require('./models/Feed');
 const Mood = require('./models/Mood');
 const Profile = require('./models/Profile');
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
+
 
 dotenv.config();
 
@@ -111,6 +114,21 @@ async function seedData() {
         await Feed.deleteMany({});
         await Mood.deleteMany({});
         await Profile.deleteMany({});
+        // Don't delete users to preserve accounts, or strictly reset if dev requires.
+        // For this seed, let's ensure admin exists.
+
+        const existingAdmin = await User.findOne({ username: 'admin' });
+        if (!existingAdmin) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash('admin123', salt);
+            await User.create({
+                username: 'admin',
+                email: 'admin@jasricozyspace.com',
+                password: hashedPassword
+            });
+            console.log('✅ Admin user created (admin / admin123)');
+        }
+
 
         await Project.insertMany(projects);
         await Feed.insertMany(feeds);

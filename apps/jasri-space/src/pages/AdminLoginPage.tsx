@@ -84,9 +84,9 @@ const AdminLoginPage: React.FC = () => {
                                 <label className="text-sm font-medium leading-none text-slate-700 dark:text-white" htmlFor="password">
                                     Password
                                 </label>
-                                <a className="text-xs font-medium text-primary hover:text-primary/80" href="#">
+                                <Link to="/admin/forgot-password" className="text-xs font-medium text-primary hover:text-primary/80">
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                             <div className="relative">
                                 <input
