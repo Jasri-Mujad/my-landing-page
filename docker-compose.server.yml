@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongo:
+    image: mongo:7
+    container_name: jasri-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - jasri-network
+
+  # Express.js API Backend
+  api:
+    build: 
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: jasri-api
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/jasri-space
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - api_uploads:/app/uploads
+    depends_on:
+      - mongo
+    networks:
+      - jasri-network
+
+  # Main Landing Page Frontend
+  landing-page:
+    build:
+      context: ./apps/landing-page
+      dockerfile: Dockerfile
+    container_name: jasri-landing
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=/api
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+    networks:
+      - jasri-network
+
+  # Jasri Space App (Optional)
+  # Uncomment if you want to run this app alongside landing-page
+  # jasri-space:
+  #   build:
+  #     context: ./apps/jasri-space
+  #     dockerfile: Dockerfile
+  #   container_name: jasri-space
+  #   restart: unless-stopped
+  #   ports:
+  #     - "5174:80"
+  #   networks:
+  #     - jasri-network
+
+  # Cloudflare Tunnel - Zero Trust Access
+  # cloudflared:
+  #   image: cloudflare/cloudflared:latest
+  #   container_name: cloudflared
+  #   restart: unless-stopped
+  #   command: tunnel run
+  #   environment:
+  #     - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+  #   networks:
+  #     - jasri-network
+
+networks:
+  jasri-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  api_uploads:

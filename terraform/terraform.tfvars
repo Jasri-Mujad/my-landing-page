@@ -1,0 +1,6 @@
+proxmox_api_url = "https://192.168.88.24:8006/api2/json"
+proxmox_api_token_id = "terraform-admin@pve!terraform-token"
+proxmox_api_token_secret = "6b42cc54-073f-4c5e-8f1a-edd294efb031"
+proxmox_node = "eton"
+template_name = "ubuntu-2404-cloud"
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDT8QBGnIqlZdoYrpiFqNfIXptmHK+9G3BQl/93RmpDze/8xhIZguWFaM1BP2hFfPPoCBzdqmr200e4NDvhMJmmQmPomPC/1Ev4KSqNCvqHexFKM239SoKefYmvqCaYEEJ4tgOiFLcw6qvzeYGgTl72xIZKXmAwGgS//c/EoAOg5Qp3ZJnAlqY0WIswqXHP1IGFCZcZVl4M9M3rTNklbmqqXVMmKXNKclMfqlzOxJ+HWYQUepR6JaILwNSMH4YSJ6llDbBRiHDE+FzxtbHUj/MjMOI72Cgu6V5qjUsvUwkhlMkjvymVm0Kl5S8uDf6acmauYm/QsrDJ0QSk1ZmZtkGuVLH3nst3jQIMvl41ivGOZIOfEV0UNyD+vPbEuoaWlrvoBhKY9O6VB6Ykj/h2Wzl/D6cos17KF64CYSxtRpP2qrAo9+nqjoWucOUjMT45u45Dn8krEHo01Qy9+HeSQpmSOaRs+00piltjyImBg1SENwcEaJD2vmbez2QzbI3hK0c= lenovo@LAPTOP-STARTERPACK"

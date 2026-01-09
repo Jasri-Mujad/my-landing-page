@@ -1,0 +1,6 @@
+proxmox_api_url = "https://192.168.0.105:8006/api2/json"  # IP Server Kau
+proxmox_api_token_id = "root@pam!terraform"          # ID Token
+proxmox_api_token_secret = "uuid-secret-token-here"  # Secret Token
+proxmox_node = "eton"                                # Nama Node (Default 'pve' tapi kau punya 'eton')
+template_name = "ubuntu-2404-cloud"                  # Nama Template
+ssh_public_key = "ssh-rsa AAAA..."                   # Isi id_rsa.pub kau
