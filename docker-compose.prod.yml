@@ -40,6 +40,16 @@ services:
     networks:
       - jasri-network
 
+  # Landing Page
+  landing-page:
+    image: ghcr.io/jasri-mujad/my-landing-page/landing-page:latest
+    container_name: jasri-landing
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    networks:
+      - jasri-network
+
   # Cloudflare Tunnel - Zero Trust Access
   # No ports exposed to internet, traffic routes through Cloudflare
   cloudflared:
