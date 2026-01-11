@@ -10,8 +10,8 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  # Test job - runs first
-  test:
+  # Backend API Tests
+  test-api:
     runs-on: ubuntu-latest
     
     steps:
@@ -29,9 +29,44 @@ jobs:
       - name: Run API tests
         run: cd apps/api && npm test
 
-  # Build job - only runs if tests pass
+  # Frontend Tests
+  test-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Frontend dependencies
+        run: cd apps/jasri-space && npm install
+
+      - name: Run Frontend tests
+        run: cd apps/jasri-space && npm test
+
+  # Security Scanning with Trivy
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner (filesystem)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'  # Don't fail build, just report (change to '1' to enforce)
+
+  # Build job - only runs if all checks pass
   build-and-push:
-    needs: test
+    needs: [test-api, test-frontend, security]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -72,4 +107,3 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO }}/frontend:latest
             ghcr.io/${{ env.REPO }}/frontend:${{ github.sha }}
-
