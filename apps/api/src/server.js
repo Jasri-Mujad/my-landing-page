@@ -51,11 +51,22 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/command-center', require('./routes/commandCenter.routes'));
 
+// Health check endpoint
 app.get('/', (req, res) => {
     res.send('Jasri Space API is running');
 });
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+// Health check endpoint for monitoring
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
+
+// Export app for testing
+module.exports = app;
+
+// Start Server only if run directly (not imported for testing)
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
+}
