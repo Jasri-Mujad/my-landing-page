@@ -107,3 +107,36 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO }}/frontend:latest
             ghcr.io/${{ env.REPO }}/frontend:${{ github.sha }}
+
+  # Email Notification on Failure
+  notify-failure:
+    if: failure()
+    needs: [test-api, test-frontend, security, build-and-push]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Send failure notification email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          secure: true
+          username: ${{ secrets.SMTP_EMAIL }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "❌ CI/CD Pipeline Failed - ${{ github.repository }}"
+          to: ${{ secrets.NOTIFICATION_EMAIL }}
+          from: "CI/CD Bot <${{ secrets.SMTP_EMAIL }}>"
+          body: |
+            🚨 Pipeline Failure Alert
+            
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            
+            View the failed run:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ---
+            This is an automated message from GitHub Actions.
+

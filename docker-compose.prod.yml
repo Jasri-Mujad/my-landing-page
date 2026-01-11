@@ -68,6 +68,83 @@ services:
     networks:
       - jasri-network
 
+  # ============================================
+  # MONITORING STACK
+  # ============================================
+
+  # Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    networks:
+      - jasri-network
+
+  # Grafana - Dashboards & Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - jasri-network
+
+  # Uptime Kuma - Uptime Monitoring & Alerts
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - uptime_kuma_data:/app/data
+    ports:
+      - "3002:3001"
+    networks:
+      - jasri-network
+
+  # ============================================
+  # BACKUP SERVICE
+  # ============================================
+
+  # MongoDB Backup - Daily automated backups
+  mongo-backup:
+    image: mongo:7
+    container_name: mongo-backup
+    restart: "no"
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        echo "Starting backup..."
+        mongodump --host mongo --port 27017 --db jasri-space --out /backups/$(date +%Y-%m-%d_%H-%M-%S)
+        echo "Backup complete. Cleaning old backups..."
+        find /backups -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true
+        echo "Done."
+    volumes:
+      - mongo_backups:/backups
+    depends_on:
+      - mongo
+    networks:
+      - jasri-network
+    # Run manually or via cron on host: docker compose run --rm mongo-backup
+
 networks:
   jasri-network:
     driver: bridge
@@ -75,3 +152,8 @@ networks:
 volumes:
   mongo_data:
   api_uploads:
+  prometheus_data:
+  grafana_data:
+  uptime_kuma_data:
+  mongo_backups:
+

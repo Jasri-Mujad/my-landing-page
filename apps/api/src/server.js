@@ -4,6 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const path = require('path');
+const promClient = require('prom-client');
 
 dotenv.config();
 
@@ -59,6 +60,35 @@ app.get('/', (req, res) => {
 // Health check endpoint for monitoring
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
+// Prometheus Metrics Setup
+const collectDefaultMetrics = promClient.collectDefaultMetrics;
+collectDefaultMetrics({ prefix: 'jasri_api_' });
+
+// Custom metrics
+const httpRequestCounter = new promClient.Counter({
+    name: 'jasri_api_http_requests_total',
+    help: 'Total number of HTTP requests',
+    labelNames: ['method', 'route', 'status']
+});
+
+// Metrics middleware
+app.use((req, res, next) => {
+    res.on('finish', () => {
+        httpRequestCounter.inc({
+            method: req.method,
+            route: req.route?.path || req.path,
+            status: res.statusCode
+        });
+    });
+    next();
+});
+
+// Prometheus metrics endpoint
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', promClient.register.contentType);
+    res.end(await promClient.register.metrics());
 });
 
 // Export app for testing
